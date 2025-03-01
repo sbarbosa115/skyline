@@ -25,7 +25,7 @@ class AuthController extends Controller
             'role' => $request->role,
         ]);
 
-        return response()->json(['message' => 'Usuario registrado correctamente'], 201);
+        return \response()->json(['message' => 'Usuario registrado correctamente'], 201);
     }
 
     // Iniciar sesión y generar token
