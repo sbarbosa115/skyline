@@ -2,11 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class IsSuperadmin
+class IsAdministrator
 {
     /**
      * Handle an incoming request.
@@ -15,12 +16,13 @@ class IsSuperadmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-         // Verificar si el usuario autenticado es superadmin
-        if (auth()->check() && auth()->user()->role === 'superadmin') {
-            return $next($request); // Permitir acceso
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        
+        if (auth()->check() && $user->hasRole(User::ROLE_ADMINISTRATOR)) {
+            return $next($request);
         }
 
-        // Si no es superadmin, devolver un error 403 (Acceso prohibido)
-        return response()->json(['message' => 'Acceso denegado. Se requiere rol de superadmin.'], 403);
+        return response()->json(['message' => 'Access denied'], 403);
     }
 }

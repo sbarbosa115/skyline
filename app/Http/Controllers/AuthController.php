@@ -18,12 +18,13 @@ class AuthController extends Controller
             'role' => 'required|in:Administrator,Reader,Lessee,Lessor',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
         ]);
+        $user->assignRole($request->role);
 
         return \response()->json(['message' => 'Usuario registrado correctamente'], 201);
     }

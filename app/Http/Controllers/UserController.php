@@ -18,7 +18,7 @@ class UserController extends Controller
 			'name' => 'required|string|max:255',
 			'email' => 'required|string|email|unique:users',
 			'password' => 'required|string|min:8',
-			'role' => 'required|in:Administrator,Reader,Arrendatario,Arrendador',
+			'role' => 'required|in:Administrator,Reader,Lessee,Lessor',
 		]);
 
 		$user = User::create($validated);
@@ -36,7 +36,7 @@ class UserController extends Controller
 			'name' => 'sometimes|string|max:255',
 			'email' => 'sometimes|string|email|unique:users,email,' . $user->id,
 			'password' => 'sometimes|string|min:8',
-			'role' => 'sometimes|in:Administrator,Reader,Arrendatario,Arrendador',
+			'role' => 'sometimes|in:Administrator,Reader,Lessee,Lessor',
 		]);
 
 		$user->update($validated);
