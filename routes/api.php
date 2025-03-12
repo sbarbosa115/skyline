@@ -28,9 +28,10 @@ Route::prefix('v1')->group(function () {
         Route::middleware(['is.administrator'])->group(function () {
             Route::apiResource('users', \App\Http\Controllers\UserController::class);
             Route::apiResource('properties', \App\Http\Controllers\PropertyController::class);
+            Route::apiResource('contracts', \App\Http\Controllers\ContractsController::class);
         });
-
-        Route::apiResource('contracts', \App\Http\Controllers\ContractsController::class);
-        Route::apiResource('bills', \App\Http\Controllers\BillsController::class);
+        
+        Route::apiResource('general-bills', \App\Http\Controllers\GeneralBillsController::class);
+        Route::apiResource('internal-bills', \App\Http\Controllers\InternalBillsController::class);
     });
 });

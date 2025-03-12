@@ -4,12 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Property;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PropertyController extends Controller
 {
-	public function index()
+	public function index(Request $request)
 	{
-		return Property::with('landlord')->get();
+		$query = Property::with('landlord');
+
+		if ($request->has('landlord_id')) {
+			$query->where('landlord_id', $request->input('landlord_id'));
+		}
+
+		return $query->get();
 	}
 
 	public function store(Request $request)
@@ -21,7 +28,7 @@ class PropertyController extends Controller
 		]);
 
 		$property = Property::create($validated);
-		return response()->json($property, 201);
+		return response()->json($property, Response::HTTP_CREATED);
 	}
 
 	public function show(Property $property)
@@ -44,6 +51,6 @@ class PropertyController extends Controller
 	public function destroy(Property $property)
 	{
 		$property->delete();
-		return response()->json(null, 204);
+		return response()->json(null, Response::HTTP_NO_CONTENT);
 	}
 }
