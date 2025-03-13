@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->date('start_date');
             $table->date('end_date');
-            $table->enum('status', ['activo', 'por vencer', 'renovado', 'finalizado']);
-            $table->foreignId('property_id')->constrained();
+            $table->enum('status', ['active', 'inactive']);
             $table->foreignId('sub_property_id')->constrained();
-            $table->foreignId('tenant_id')->constrained('users');
+            $table->foreignId('lessor_id')->constrained('users');
+            $table->foreignId('lessee_id')->constrained('users');
             $table->timestamps();
         });
     }

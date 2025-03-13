@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('internal_bills', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('general_bill_id')->constrained();
             $table->foreignId('sub_property_id')->constrained();
             $table->decimal('amount', 10, 2);
-            $table->enum('payment_status', ['pendiente', 'pagado']);
+            $table->decimal('price', 10, 2);
+            $table->enum('payment_status', ['pending', 'paid']);
             $table->string('proof_of_payment')->nullable();
             $table->timestamps();
         });

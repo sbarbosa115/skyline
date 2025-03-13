@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('general_bills', function (Blueprint $table) {
             $table->id();
             $table->foreignId('property_id')->constrained();
-            $table->string('service_type');
-            $table->decimal('amount', 10, 2);
+            $table->foreignId('service_type_id')->constrained();
             $table->date('period');
-            $table->enum('payment_status', ['pendiente', 'pagado']);
+            $table->decimal('amount', 10, 2);
+            $table->decimal('price', 10, 2);
+            $table->enum('payment_status', ['pending', 'paid']);
             $table->timestamps();
         });
     }
