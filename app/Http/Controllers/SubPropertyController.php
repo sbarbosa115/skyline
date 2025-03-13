@@ -22,8 +22,8 @@ class SubPropertyController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'unit_number' => 'required|string|max:255',
             'property_id' => 'required|exists:properties,id',
-            'name' => 'required|string|max:255',
             'tenant_id' => 'nullable|exists:users,id',
         ]);
 
@@ -49,8 +49,8 @@ class SubPropertyController extends Controller
         $subProperty = SubProperty::findOrFail($id);
 
         $request->validate([
+            'unit_number' => 'required|string|max:255',
             'property_id' => 'required|exists:properties,id',
-            'name' => 'required|string|max:255',
             'tenant_id' => 'nullable|exists:users,id',
         ]);
 

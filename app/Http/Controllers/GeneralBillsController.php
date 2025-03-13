@@ -13,7 +13,7 @@ class GeneralBillsController extends Controller
      */
     public function index()
     {
-        return response()->json(GeneralBill::with(['property', 'subProperty'])->get());
+        return response()->json(GeneralBill::with(['property'])->get());
     }
 
     /**
@@ -22,13 +22,12 @@ class GeneralBillsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'type'           => 'required|in:general,internal',
-            'property_id'    => 'nullable|exists:properties,id',
-            'sub_property_id' => 'nullable|exists:sub_properties,id',
-            'service_type'   => 'required|string|max:255',
-            'period'         => 'required|string|max:50',
-            'amount'         => 'required|numeric|min:0',
-            'status'         => 'required|in:pendiente,pagado,vencido',
+            'property_id' => 'required|exists:properties,id',
+            'service_type_id' => 'required|exists:service_types,id',
+            'period' => 'required|date',
+            'amount' => 'required|numeric|min:0|max:99999999.99',
+            'price' => 'required|numeric|min:0|max:99999999.99',
+            'payment_status' => 'required|in:pending,paid',
         ]);
 
         $bill = GeneralBill::create($request->all());
@@ -41,7 +40,7 @@ class GeneralBillsController extends Controller
      */
     public function show($id)
     {
-        $bill = GeneralBill::with(['property', 'subProperty'])->findOrFail($id);
+        $bill = GeneralBill::with(['property'])->findOrFail($id);
         return response()->json($bill);
     }
 
@@ -53,13 +52,12 @@ class GeneralBillsController extends Controller
         $bill = GeneralBill::findOrFail($id);
 
         $request->validate([
-            'type'           => 'required|in:general,internal',
-            'property_id'    => 'nullable|exists:properties,id',
-            'sub_property_id' => 'nullable|exists:sub_properties,id',
-            'service_type'   => 'required|string|max:255',
-            'period'         => 'required|string|max:50',
-            'amount'         => 'required|numeric|min:0',
-            'status'         => 'required|in:pendiente,pagado,vencido',
+           'property_id' => 'required|exists:properties,id',
+            'service_type_id' => 'required|exists:service_types,id',
+            'period' => 'required|date',
+            'amount' => 'required|numeric|min:0|max:99999999.99',
+            'price' => 'required|numeric|min:0|max:99999999.99',
+            'payment_status' => 'required|in:pending,paid',
         ]);
 
         $bill->update($request->all());

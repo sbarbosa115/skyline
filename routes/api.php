@@ -28,6 +28,7 @@ Route::prefix('v1')->group(function () {
         Route::middleware(['is.administrator'])->group(function () {
             Route::apiResource('users', \App\Http\Controllers\UserController::class);
             Route::apiResource('properties', \App\Http\Controllers\PropertyController::class);
+            Route::apiResource('sub-properties', \App\Http\Controllers\SubPropertyController::class);
             Route::apiResource('contracts', \App\Http\Controllers\ContractsController::class);
         });
         

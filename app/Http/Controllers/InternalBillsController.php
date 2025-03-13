@@ -22,12 +22,12 @@ class InternalBillsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'general_bill_id' => 'required|exists:general_bills,id',
             'sub_property_id' => 'required|exists:sub_properties,id',
-            'service_type'    => 'required|string|max:255',
-            'period'          => 'required|string|max:50',
-            'amount'          => 'required|numeric|min:0',
-            'status'          => 'required|in:pendiente,pagado,vencido',
-            'receipt'         => 'nullable|string|max:255', // URL o referencia al comprobante
+            'amount' => 'required|numeric|min:0|max:99999999.99',
+            'price' => 'required|numeric|min:0|max:99999999.99',
+            'payment_status' => 'required|in:pending,paid',
+            'proof_of_payment' => 'nullable|string|max:255',
         ]);
 
         $internalBill = InternalBill::create($request->all());
@@ -52,12 +52,12 @@ class InternalBillsController extends Controller
         $internalBill = InternalBill::findOrFail($id);
 
         $request->validate([
+            'general_bill_id' => 'required|exists:general_bills,id',
             'sub_property_id' => 'required|exists:sub_properties,id',
-            'service_type'    => 'required|string|max:255',
-            'period'          => 'required|string|max:50',
-            'amount'          => 'required|numeric|min:0',
-            'status'          => 'required|in:pendiente,pagado,vencido',
-            'receipt'         => 'nullable|string|max:255',
+            'amount' => 'required|numeric|min:0|max:99999999.99',
+            'price' => 'required|numeric|min:0|max:99999999.99',
+            'payment_status' => 'required|in:pending,paid',
+            'proof_of_payment' => 'nullable|string|max:255',
         ]);
 
         $internalBill->update($request->all());

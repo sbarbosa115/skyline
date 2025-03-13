@@ -14,7 +14,7 @@ class ContractsController extends Controller
     public function index()
     {
         return response()->json(
-            Contract::with(['property', 'subProperty', 'tenant'])->get()
+            Contract::with(['subProperty', 'tenant'])->get()
         );
     }
 
@@ -24,12 +24,11 @@ class ContractsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'property_id' => 'nullable|exists:properties,id',
             'sub_property_id' => 'nullable|exists:sub_properties,id',
             'tenant_id' => 'required|exists:users,id',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
-            'status' => 'required|in:activo,por vencer,renovado,finalizado',
+            'status' => 'required|in:active,inactive',
         ]);
 
         $contract = Contract::create($request->all());
@@ -42,7 +41,7 @@ class ContractsController extends Controller
      */
     public function show($id)
     {
-        $contract = Contract::with(['property', 'subProperty', 'tenant'])->findOrFail($id);
+        $contract = Contract::with(['subProperty', 'tenant'])->findOrFail($id);
         return response()->json($contract);
     }
 
@@ -54,12 +53,11 @@ class ContractsController extends Controller
         $contract = Contract::findOrFail($id);
 
         $request->validate([
-            'property_id' => 'nullable|exists:properties,id',
             'sub_property_id' => 'nullable|exists:sub_properties,id',
             'tenant_id' => 'required|exists:users,id',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
-            'status' => 'required|in:activo,por vencer,renovado,finalizado',
+            'status' => 'required|in:active,inactive',
         ]);
 
         $contract->update($request->all());
