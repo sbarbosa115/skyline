@@ -9,10 +9,14 @@ class Contract extends Model
 {
     use HasFactory;
 
-    public function property()
-    {
-        return $this->belongsTo(Property::class);
-    }
+    protected $fillable = [
+        'start_date',
+        'end_date',
+        'status',
+        'sub_property_id',
+        'lessor_id',
+        'lessee_id',
+    ];
 
     public function subProperty()
     {

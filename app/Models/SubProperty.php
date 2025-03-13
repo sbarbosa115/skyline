@@ -9,6 +9,12 @@ class SubProperty extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "unit_number",
+        "property_id",
+        "tenant_id",
+    ];
+
     public function property()
     {
         return $this->belongsTo(Property::class);
