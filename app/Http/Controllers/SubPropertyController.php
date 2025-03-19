@@ -13,7 +13,7 @@ class SubPropertyController extends Controller
      */
     public function index()
     {
-        return response()->json(SubProperty::with('property', 'tenant')->get());
+        return response()->json(SubProperty::with('property')->get());
     }
 
     /**
@@ -24,7 +24,6 @@ class SubPropertyController extends Controller
         $request->validate([
             'unit_number' => 'required|string|max:255',
             'property_id' => 'required|exists:properties,id',
-            'tenant_id' => 'nullable|exists:users,id',
         ]);
 
         $subProperty = SubProperty::create($request->all());
@@ -37,7 +36,7 @@ class SubPropertyController extends Controller
      */
     public function show($id)
     {
-        $subProperty = SubProperty::with('property', 'tenant')->findOrFail($id);
+        $subProperty = SubProperty::with('property')->findOrFail($id);
         return response()->json($subProperty);
     }
 
@@ -51,7 +50,6 @@ class SubPropertyController extends Controller
         $request->validate([
             'unit_number' => 'required|string|max:255',
             'property_id' => 'required|exists:properties,id',
-            'tenant_id' => 'nullable|exists:users,id',
         ]);
 
         $subProperty->update($request->all());

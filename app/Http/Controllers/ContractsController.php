@@ -14,7 +14,7 @@ class ContractsController extends Controller
     public function index()
     {
         return response()->json(
-            Contract::with(['subProperty', 'tenant'])->get()
+            Contract::with(['property', 'subProperty', 'lessor', 'lessee'])->get()
         );
     }
 
@@ -24,7 +24,8 @@ class ContractsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'sub_property_id' => 'nullable|exists:sub_properties,id',
+            'property_id' => 'nullable|exists:sub_properties,id|required_without:sub_property_id',
+            'sub_property_id' => 'nullable|exists:sub_properties,id|required_without:property_id',
             'tenant_id' => 'required|exists:users,id',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
@@ -41,7 +42,7 @@ class ContractsController extends Controller
      */
     public function show($id)
     {
-        $contract = Contract::with(['subProperty', 'tenant'])->findOrFail($id);
+        $contract = Contract::with(['property', 'subProperty', 'lessor', 'lessee'])->findOrFail($id);
         return response()->json($contract);
     }
 
@@ -53,7 +54,9 @@ class ContractsController extends Controller
         $contract = Contract::findOrFail($id);
 
         $request->validate([
-            'sub_property_id' => 'nullable|exists:sub_properties,id',
+            'property_id' => 'nullable|exists:sub_properties,id|required_without:sub_property_id',
+            'sub_property_id' => 'nullable|exists:sub_properties,id|required_without:property_id',
+            'tenant_id' => 'required|exists:users,id',
             'tenant_id' => 'required|exists:users,id',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',

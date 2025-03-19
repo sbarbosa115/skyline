@@ -8,6 +8,11 @@ use Illuminate\Http\Response;
 
 class InternalBillsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
     /**
      * Display a listing of internal bills.
      */
@@ -23,7 +28,8 @@ class InternalBillsController extends Controller
     {
         $request->validate([
             'general_bill_id' => 'required|exists:general_bills,id',
-            'sub_property_id' => 'required|exists:sub_properties,id',
+            'property_id' => 'nullable|exists:sub_properties,id|required_without:sub_property_id',
+            'sub_property_id' => 'nullable|exists:sub_properties,id|required_without:property_id',
             'amount' => 'required|numeric|min:0|max:99999999.99',
             'price' => 'required|numeric|min:0|max:99999999.99',
             'payment_status' => 'required|in:pending,paid',
@@ -53,7 +59,8 @@ class InternalBillsController extends Controller
 
         $request->validate([
             'general_bill_id' => 'required|exists:general_bills,id',
-            'sub_property_id' => 'required|exists:sub_properties,id',
+            'property_id' => 'nullable|exists:sub_properties,id|required_without:sub_property_id',
+            'sub_property_id' => 'nullable|exists:sub_properties,id|required_without:property_id',
             'amount' => 'required|numeric|min:0|max:99999999.99',
             'price' => 'required|numeric|min:0|max:99999999.99',
             'payment_status' => 'required|in:pending,paid',
