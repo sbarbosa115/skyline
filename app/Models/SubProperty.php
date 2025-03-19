@@ -12,17 +12,11 @@ class SubProperty extends Model
     protected $fillable = [
         "unit_number",
         "property_id",
-        "tenant_id",
     ];
 
     public function property()
     {
         return $this->belongsTo(Property::class);
-    }
-
-    public function tenant()
-    {
-        return $this->belongsTo(User::class, 'tenant_id');
     }
 
     public function contracts()

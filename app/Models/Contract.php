@@ -13,18 +13,29 @@ class Contract extends Model
         'start_date',
         'end_date',
         'status',
+        'property_id',
         'sub_property_id',
         'lessor_id',
         'lessee_id',
     ];
+
+    public function property()
+    {
+        return $this->belongsTo(Property::class);
+    }
 
     public function subProperty()
     {
         return $this->belongsTo(SubProperty::class);
     }
 
-    public function tenant()
+    public function lessor()
     {
-        return $this->belongsTo(User::class, 'tenant_id');
+        return $this->belongsTo(User::class, 'lessor_id');
+    }
+
+    public function lessee()
+    {
+        return $this->belongsTo(User::class, 'lessee_id');
     }
 }

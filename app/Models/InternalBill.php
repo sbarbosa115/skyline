@@ -11,6 +11,7 @@ class InternalBill extends Model
 
     protected $fillable = [
         'general_bill_id',
+        'property_id',
         'sub_property_id',
         'amount',
         'price',
