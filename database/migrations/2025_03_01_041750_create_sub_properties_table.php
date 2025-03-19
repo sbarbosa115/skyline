@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('unit_number');
             $table->foreignId('property_id')->constrained();
-            $table->foreignId('tenant_id')->constrained('users');
             $table->timestamps();
         });
     }
