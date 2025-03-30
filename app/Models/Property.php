@@ -13,6 +13,7 @@ class Property extends Model
         'name',
         'description',
         'landlord_id',
+        'has_sub_properties',
     ];
 
     public function landlord()

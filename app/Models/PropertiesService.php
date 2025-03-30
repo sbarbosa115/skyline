@@ -5,19 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class GeneralBill extends Model
+class PropertiesService extends Model
 {
     use HasFactory;
 
+    protected $table = 'properties_services';
+
     protected $fillable = [
         'property_id',
-        'sub_property_id',
         'service_type_id',
-        'period_from',
-        'period_to',
-        'amount',
-        'price',
-        'payment_status',
+        'name',
+        'is_shared',
     ];
 
     public function property()
@@ -28,5 +26,10 @@ class GeneralBill extends Model
     public function serviceType()
     {
         return $this->belongsTo(ServiceType::class);
+    }
+
+    public function sharedServices()
+    {
+        return $this->hasMany(SharedService::class);
     }
 }

@@ -13,16 +13,10 @@ class Contract extends Model
         'start_date',
         'end_date',
         'status',
-        'property_id',
         'sub_property_id',
         'lessor_id',
         'lessee_id',
     ];
-
-    public function property()
-    {
-        return $this->belongsTo(Property::class);
-    }
 
     public function subProperty()
     {

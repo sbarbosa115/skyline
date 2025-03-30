@@ -5,19 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WorkOrder extends Model
+class SharedService extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'property_service_id',
         'sub_property_id',
-        'description',
-        'status',
     ];
 
-    public function property()
+    public function propertyService()
     {
-        return $this->belongsTo(Property::class);
+        return $this->belongsTo(PropertiesService::class);
     }
 
     public function subProperty()
