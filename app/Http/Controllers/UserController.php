@@ -8,6 +8,11 @@ use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
+	private array $rules = [
+		'unit_number' => 'required|string|max:255',
+		'property_id' => 'required|exists:properties,id',
+	];
+
 	public function index(Request $request)
 	{
 		$query = User::query();
@@ -25,14 +30,9 @@ class UserController extends Controller
 
 	public function store(Request $request)
 	{
-		$validated = $request->validate([
-			'name' => 'required|string|max:255',
-			'email' => 'required|string|email|unique:users',
-			'password' => 'required|string|min:8',
-			'role' => 'required|in:Administrator,Reader,Lessor,Lessee',
-		]);
-
+		$validated = $request->validate($this->rules);
 		$user = User::create($validated);
+
 		return response()->json($user, Response::HTTP_CREATED);
 	}
 
@@ -43,20 +43,16 @@ class UserController extends Controller
 
 	public function update(Request $request, User $user)
 	{
-		$validated = $request->validate([
-			'name' => 'sometimes|string|max:255',
-			'email' => 'sometimes|string|email|unique:users,email,' . $user->id,
-			'password' => 'sometimes|string|min:8',
-			'role' => 'sometimes|in:Administrator,Reader,Lessor,Lessee',
-		]);
-
+		$validated = $request->validate($this->rules);
 		$user->update($validated);
+
 		return response()->json($user);
 	}
 
 	public function destroy(User $user)
 	{
 		$user->delete();
+		
 		return response()->json(null, Response::HTTP_NO_CONTENT);
 	}
 }

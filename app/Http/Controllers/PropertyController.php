@@ -8,6 +8,12 @@ use Illuminate\Http\Response;
 
 class PropertyController extends Controller
 {
+	private array $rules = [
+		'name' => 'required|string|max:255',
+		'description' => 'nullable|string',
+		'landlord_id' => 'required|exists:users,id',
+	];
+
 	public function index(Request $request)
 	{
 		$query = Property::with('landlord');
@@ -21,13 +27,9 @@ class PropertyController extends Controller
 
 	public function store(Request $request)
 	{
-		$validated = $request->validate([
-			'name' => 'required|string|max:255',
-			'description' => 'nullable|string',
-			'landlord_id' => 'required|exists:users,id',
-		]);
-
+		$validated = $request->validate($this->rules);
 		$property = Property::create($validated);
+
 		return response()->json($property, Response::HTTP_CREATED);
 	}
 
@@ -38,19 +40,16 @@ class PropertyController extends Controller
 
 	public function update(Request $request, Property $property)
 	{
-		$validated = $request->validate([
-			'name' => 'sometimes|string|max:255',
-			'description' => 'nullable|string',
-			'landlord_id' => 'sometimes|exists:users,id',
-		]);
-
+		$validated = $request->validate($this->rules);
 		$property->update($validated);
+
 		return response()->json($property);
 	}
 
 	public function destroy(Property $property)
 	{
 		$property->delete();
+		
 		return response()->json(null, Response::HTTP_NO_CONTENT);
 	}
 }

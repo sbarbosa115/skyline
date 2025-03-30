@@ -8,7 +8,6 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    // Registrar un nuevo usuario
     public function register(Request $request)
     {
         $request->validate([
@@ -29,7 +28,6 @@ class AuthController extends Controller
         return \response()->json(['message' => 'Usuario registrado correctamente'], 201);
     }
 
-    // Iniciar sesión y generar token
     public function login(Request $request)
     {
         $request->validate([
@@ -48,7 +46,6 @@ class AuthController extends Controller
         return response()->json(['token' => $token], 200);
     }
 
-    // Cerrar sesión y revocar token
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
