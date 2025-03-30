@@ -30,6 +30,7 @@ Route::prefix('v1')->group(function () {
             Route::apiResource('properties', \App\Http\Controllers\PropertyController::class);
             Route::apiResource('sub-properties', \App\Http\Controllers\SubPropertyController::class);
             Route::apiResource('contracts', \App\Http\Controllers\ContractsController::class);
+            Route::apiResource('properties-services', \App\Http\Controllers\PropertiesServicesController::class);
         });
         
         Route::apiResource('general-bills', \App\Http\Controllers\GeneralBillsController::class);
