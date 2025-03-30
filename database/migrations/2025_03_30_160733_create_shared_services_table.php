@@ -8,17 +8,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('bill_readings', function (Blueprint $table) {
+        Schema::create('shared_services', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('property_service_id')->constrained();
             $table->foreignId('sub_property_id')->constrained();
-            $table->decimal('reading_value', 10, 2);
-            $table->date('reading_date');
             $table->timestamps();
         });
     }
 
     public function down(): void
-    {
-        Schema::dropIfExists('bill_readings');
+    {                                             
+        Schema::dropIfExists('shared_services');
     }
 };
