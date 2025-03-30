@@ -9,13 +9,20 @@ use Illuminate\Database\Seeder;
 
 class PropertySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $lessor = User::where('email', 'lessor@example.com')->first();
-        $property1 = Property::create(['name' => 'Property 1', 'description' => 'Description 1', 'landlord_id' => $lessor->id]);
-        $property2 = Property::create(['name' => 'Property 2', 'description' => 'Description 2', 'landlord_id' => $lessor->id]);
+        $lessor1 = User::where('email', 'lessor1@example.com')->first();
+        $lessor2 = User::where('email', 'lessor2@example.com')->first();
+        $lessor3 = User::where('email', 'lessor3@example.com')->first();
+
+        $properties = [
+            ['name' => 'Property 1', 'description' => 'Description 1', 'landlord_id' => $lessor1->id, 'has_sub_properties' => false],
+            ['name' => 'Property 2', 'description' => 'Description 2', 'landlord_id' => $lessor2->id, 'has_sub_properties' => true],
+            ['name' => 'Property 3', 'description' => 'Description 3', 'landlord_id' => $lessor3->id, 'has_sub_properties' => true],
+        ];
+
+        foreach ($properties as $propertyData) {
+            Property::create($propertyData);
+        }
     }
 }

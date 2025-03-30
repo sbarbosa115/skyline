@@ -13,16 +13,28 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $administrator = User::create(['name' => 'Administrator', 'email' => 'administrator@example.com', 'password' => bcrypt('12345678')]);
-        $administrator->assignRole('Administrator');
+        $users = [
+            ['name' => 'Administrator', 'email' => 'administrator@example.com', 'role' => 'Administrator'],
+            ['name' => 'Lessor1', 'email' => 'lessor1@example.com', 'role' => 'Lessor'],
+            ['name' => 'Lessee1', 'email' => 'lessee1@example.com', 'role' => 'Lessee'],
+            ['name' => 'Reader1', 'email' => 'reader1@example.com', 'role' => 'Reader'],
 
-        $lessor = User::create(['name' => 'Lessor', 'email' => 'lessor@example.com', 'password' => bcrypt('12345678')]);
-        $lessor->assignRole('Lessor');
-        
-        $lessee = User::create(['name' => 'Lessee', 'email' => 'lessee@example.com', 'password' => bcrypt('12345678')]);
-        $lessee->assignRole('Lessee');
+            ['name' => 'Lessor2', 'email' => 'lessor2@example.com', 'role' => 'Lessor'],
+            ['name' => 'Lessee2', 'email' => 'lessee2@example.com', 'role' => 'Lessee'],
+            ['name' => 'Reader2', 'email' => 'reader2@example.com', 'role' => 'Reader'],
+            
+            ['name' => 'Lessor3', 'email' => 'lessor3@example.com', 'role' => 'Lessor'],
+            ['name' => 'Lessee3', 'email' => 'lessee3@example.com', 'role' => 'Lessee'],
+            ['name' => 'Reader3', 'email' => 'reader3@example.com', 'role' => 'Reader'],
+        ];
 
-        $reader = User::create(['name' => 'Reader', 'email' => 'reader@example.com', 'password' => bcrypt('12345678')]);
-        $reader->assignRole('Reader');
+        foreach ($users as $userData) {
+            $user = User::create([
+                'name' => $userData['name'],
+                'email' => $userData['email'],
+                'password' => bcrypt('12345678'),
+            ]);
+            $user->assignRole($userData['role']);
+        }
     }
 }
