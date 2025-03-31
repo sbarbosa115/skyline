@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GeneralBill;
-use GeneralBillsService;
+use App\Services\GeneralBillsService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -15,7 +15,7 @@ class GeneralBillsController extends Controller
         'sub_property_id' => 'nullable|exists:sub_properties,id',
         'service_type_id' => 'required|exists:service_types,id',
         'period_from' => 'required|date',
-        'period_to' => 'required|date',
+        'period_to' => 'required|date|after_or_equal:period_from',
         'amount' => 'required|numeric|min:0|max:99999999.99',
         'price' => 'required|numeric|min:0|max:99999999.99',
         'payment_status' => 'required|in:pending,paid',
@@ -41,7 +41,7 @@ class GeneralBillsController extends Controller
     public function show($id)
     {
         $bill = GeneralBill::with(['property'])->findOrFail($id);
-        
+
         return response()->json($bill);
     }
 

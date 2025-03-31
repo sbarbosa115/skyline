@@ -3,20 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contract;
+use App\Services\ContractsService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ContractsController extends Controller
 {
-
+    private ContractsService $service;
     private array $rules = [
-        'property_id' => 'nullable|exists:sub_properties,id|required_without:sub_property_id',
-        'sub_property_id' => 'nullable|exists:sub_properties,id|required_without:property_id',
-        'tenant_id' => 'required|exists:users,id',
+        'property_id' => 'required|exists:properties,id',
+        'sub_property_id' => 'nullable|exists:sub_properties,id',
+        'lessor_id' => 'required|exists:users,id',
+        'lessee_id' => 'required|exists:users,id',
         'start_date' => 'required|date',
         'end_date' => 'required|date|after:start_date',
         'status' => 'required|in:active,inactive',
     ];
+
+    public function __construct(ContractsService $service)
+    {
+        $this->service = $service;
+    }
 
     public function index()
     {
@@ -28,9 +35,7 @@ class ContractsController extends Controller
     public function store(Request $request)
     {
         $request->validate($this->rules);
-        $contract = Contract::create($request->all());
-
-        return response()->json($contract, Response::HTTP_CREATED);
+        return $this->service->create($request->all());
     }
 
     public function show($id)

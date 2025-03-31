@@ -3,22 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\PropertiesService;
+use App\Services\PropertiesServicesService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class PropertiesServicesController extends Controller
 {
+    private PropertiesServicesService $service;
     private $rules = [
         'property_id' => 'required|exists:properties,id',
-        'service_id' => 'required|exists:service_types,id',
+        'service_type_id' => 'required|exists:service_types,id',
+        'name' => 'required|string',
         'is_shared' => 'required|boolean',
         'sub_properties_ids' => 'required_if:is_shared,true|array',
         'sub_properties_ids.*' => 'integer|exists:sub_properties,id',
     ];
 
-    public function __construct()
+    public function __construct(PropertiesServicesService $service)
     {
         $this->middleware('auth:sanctum');
+        $this->service = $service;
     }
 
     public function index()
@@ -29,9 +33,7 @@ class PropertiesServicesController extends Controller
     public function store(Request $request)
     {
         $request->validate($this->rules);
-        $internalBill = PropertiesService::create($request->all());
-
-        return response()->json($internalBill, Response::HTTP_CREATED);
+        return $this->service->create($request->all());
     }
 
     public function show(string $id)

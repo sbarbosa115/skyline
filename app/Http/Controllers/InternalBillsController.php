@@ -3,24 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\InternalBill;
+use App\Services\InternalBillsService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class InternalBillsController extends Controller
 {
+    private InternalBillsService $service;
     private array $rules = [
         'general_bill_id' => 'required|exists:general_bills,id',
-        'property_id' => 'nullable|exists:sub_properties,id|required_without:sub_property_id',
-        'sub_property_id' => 'nullable|exists:sub_properties,id|required_without:property_id',
+        'property_id' => 'required|exists:properties,id',
+        'sub_property_id' => 'required|exists:sub_properties,id',
         'amount' => 'required|numeric|min:0|max:99999999.99',
-        'price' => 'required|numeric|min:0|max:99999999.99',
+        'price' => 'nullable|numeric|min:0|max:99999999.99',
         'payment_status' => 'required|in:pending,paid',
         'proof_of_payment' => 'nullable|string|max:255',
     ];
 
-    public function __construct()
+
+    public function __construct(InternalBillsService $service)
     {
         $this->middleware('auth:sanctum');
+        $this->service = $service;
     }
 
     public function index()
@@ -28,12 +33,10 @@ class InternalBillsController extends Controller
         return response()->json(InternalBill::with('subProperty')->get());
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $request->validate($this->rules);
-        $internalBill = InternalBill::create($request->all());
-
-        return response()->json($internalBill, Response::HTTP_CREATED);
+        return $this->service->create($request->all());
     }
 
     public function show($id)
