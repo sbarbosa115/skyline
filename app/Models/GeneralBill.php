@@ -29,4 +29,12 @@ class GeneralBill extends Model
     {
         return $this->belongsTo(ServiceType::class);
     }
+
+
+    #region functions
+    public function calculateUnitPrice(): float
+    {
+        return round($this->price / $this->amount, 2);
+    }
+    #endregion
 }
