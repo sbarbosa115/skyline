@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('property_id')->constrained();
             $table->foreignId('service_type_id')->constrained();
-            $table->varchar('name');
+            $table->string('name');
             $table->boolean('is_shared'); // only if property has sub properties
             $table->timestamps();
         });

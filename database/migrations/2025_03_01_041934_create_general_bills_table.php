@@ -11,7 +11,8 @@ return new class extends Migration
         Schema::create('general_bills', function (Blueprint $table) {
             $table->id();
             $table->foreignId('property_id')->constrained();
-            $table->foreignId('sub_property_id')->constrained()->nullable();
+            // Foreign field does not support default value
+            $table->unsignedBigInteger('sub_property_id')->nullable()->default(0);
             $table->foreignId('service_type_id')->constrained();
             $table->date('period_from');
             $table->date('period_to');
@@ -19,6 +20,7 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->enum('payment_status', ['pending', 'paid']);
             $table->timestamps();
+            $table->foreign('sub_property_id')->references('id')->on('sub_properties')->onDelete('cascade');
         });
     }
 

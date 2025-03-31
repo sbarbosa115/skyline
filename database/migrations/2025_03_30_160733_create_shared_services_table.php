@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('shared_services', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('property_service_id')->constrained();
+            $table->foreignId('properties_service_id')->constrained();
             $table->foreignId('sub_property_id')->constrained();
             $table->timestamps();
         });
