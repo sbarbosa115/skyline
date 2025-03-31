@@ -2,54 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|min:8',
-            'role' => 'required|in:Administrator,Reader,Lessor,Lessee',
-        ]);
+	public function register(RegisterRequest $request)
+	{
+		$user = User::create([
+			'name' => $request->name,
+			'email' => $request->email,
+			'password' => Hash::make($request->password),
+			'role' => $request->role,
+		]);
+		$user->assignRole($request->role);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-        ]);
-        $user->assignRole($request->role);
+		return \response()->json(['message' => 'Usuario registrado correctamente'], 201);
+	}
 
-        return \response()->json(['message' => 'Usuario registrado correctamente'], 201);
-    }
+	public function login(LoginRequest $request)
+	{
+		$user = User::where('email', $request->email)->first();
 
-    public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
+		if (!$user || !Hash::check($request->password, $user->password)) {
+			return response()->json(['error' => 'Credenciales inválidas'], 401);
+		}
 
-        $user = User::where('email', $request->email)->first();
+		$token = $user->createToken('auth_token')->plainTextToken;
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['error' => 'Credenciales inválidas'], 401);
-        }
+		return response()->json(['token' => $token], 200);
+	}
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+	public function logout(Request $request)
+	{
+		$request->user()->currentAccessToken()->delete();
 
-        return response()->json(['token' => $token], 200);
-    }
-
-    public function logout(Request $request)
-    {
-        $request->user()->currentAccessToken()->delete();
-
-        return response()->json(['message' => 'Sesión cerrada correctamente'], 200);
-    }
+		return response()->json(['message' => 'Sesión cerrada correctamente'], 200);
+	}
 }

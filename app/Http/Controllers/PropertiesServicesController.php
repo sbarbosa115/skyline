@@ -2,22 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SavePropertiesServicesRequest;
 use App\Models\PropertiesService;
 use App\Services\PropertiesServicesService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class PropertiesServicesController extends Controller
 {
     private PropertiesServicesService $service;
-    private $rules = [
-        'property_id' => 'required|exists:properties,id',
-        'service_type_id' => 'required|exists:service_types,id',
-        'name' => 'required|string',
-        'is_shared' => 'required|boolean',
-        'sub_properties_ids' => 'required_if:is_shared,true|array',
-        'sub_properties_ids.*' => 'integer|exists:sub_properties,id',
-    ];
 
     public function __construct(PropertiesServicesService $service)
     {
@@ -30,10 +22,9 @@ class PropertiesServicesController extends Controller
         return response()->json(PropertiesService::with('property')->get());
     }
 
-    public function store(Request $request)
+    public function store(SavePropertiesServicesRequest $request)
     {
-        $request->validate($this->rules);
-        return $this->service->create($request->all());
+        return $this->service->create($request->validated());
     }
 
     public function show(string $id)
@@ -43,12 +34,10 @@ class PropertiesServicesController extends Controller
         return response()->json($propertiesService);
     }
 
-    public function update(Request $request, string $id)
+    public function update(SavePropertiesServicesRequest $request, string $id)
     {
         $propertiesService = PropertiesService::findOrFail($id);
-
-        $request->validate($this->rules);
-        $propertiesService->update($request->all());
+        $propertiesService->update($request->validated());
 
         return response()->json($propertiesService);
     }

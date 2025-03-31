@@ -2,25 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveInternalBillsRequest;
 use App\Models\InternalBill;
 use App\Services\InternalBillsService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class InternalBillsController extends Controller
 {
     private InternalBillsService $service;
-    private array $rules = [
-        'general_bill_id' => 'required|exists:general_bills,id',
-        'property_id' => 'required|exists:properties,id',
-        'sub_property_id' => 'required|exists:sub_properties,id',
-        'amount' => 'required|numeric|min:0|max:99999999.99',
-        'price' => 'nullable|numeric|min:0|max:99999999.99',
-        'payment_status' => 'required|in:pending,paid',
-        'proof_of_payment' => 'nullable|string|max:255',
-    ];
-
 
     public function __construct(InternalBillsService $service)
     {
@@ -33,10 +23,9 @@ class InternalBillsController extends Controller
         return response()->json(InternalBill::with('subProperty')->get());
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(SaveInternalBillsRequest $request): JsonResponse
     {
-        $request->validate($this->rules);
-        return $this->service->create($request->all());
+        return $this->service->create($request->validated());
     }
 
     public function show($id)
@@ -46,12 +35,10 @@ class InternalBillsController extends Controller
         return response()->json($internalBill);
     }
 
-    public function update(Request $request, $id)
+    public function update(SaveInternalBillsRequest $request, $id)
     {
         $internalBill = InternalBill::findOrFail($id);
-
-        $request->validate($this->rules);
-        $internalBill->update($request->all());
+        $internalBill->update($request->validated());
 
         return response()->json($internalBill);
     }

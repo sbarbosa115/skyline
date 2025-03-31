@@ -2,18 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SavePropertiesRequest;
 use App\Models\Property;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class PropertyController extends Controller
 {
-	private array $rules = [
-		'name' => 'required|string|max:255',
-		'description' => 'nullable|string',
-		'landlord_id' => 'required|exists:users,id',
-	];
-
 	public function index(Request $request)
 	{
 		$query = Property::with('landlord');
@@ -25,10 +20,9 @@ class PropertyController extends Controller
 		return $query->get();
 	}
 
-	public function store(Request $request)
+	public function store(SavePropertiesRequest $request)
 	{
-		$validated = $request->validate($this->rules);
-		$property = Property::create($validated);
+		$property = Property::create($request->validated());
 
 		return response()->json($property, Response::HTTP_CREATED);
 	}
@@ -38,10 +32,9 @@ class PropertyController extends Controller
 		return $property->load('landlord');
 	}
 
-	public function update(Request $request, Property $property)
+	public function update(SavePropertiesRequest $request, Property $property)
 	{
-		$validated = $request->validate($this->rules);
-		$property->update($validated);
+		$property->update($request->validated());
 
 		return response()->json($property);
 	}

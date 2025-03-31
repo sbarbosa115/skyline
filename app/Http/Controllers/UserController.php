@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
-	private array $rules = [
-		'unit_number' => 'required|string|max:255',
-		'property_id' => 'required|exists:properties,id',
-	];
-
 	public function index(Request $request)
 	{
 		$query = User::query();
@@ -28,10 +24,9 @@ class UserController extends Controller
 		return $query->get();
 	}
 
-	public function store(Request $request)
+	public function store(SaveUserRequest $request)
 	{
-		$validated = $request->validate($this->rules);
-		$user = User::create($validated);
+		$user = User::create($request->validated());
 
 		return response()->json($user, Response::HTTP_CREATED);
 	}
@@ -41,10 +36,9 @@ class UserController extends Controller
 		return $user;
 	}
 
-	public function update(Request $request, User $user)
+	public function update(SaveUserRequest $request, User $user)
 	{
-		$validated = $request->validate($this->rules);
-		$user->update($validated);
+		$user->update($request->validated());
 
 		return response()->json($user);
 	}
