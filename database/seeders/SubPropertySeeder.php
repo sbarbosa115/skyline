@@ -39,6 +39,12 @@ class SubPropertySeeder extends Seeder
             "landlord_id" => $landlord3->id,
         ]);
 
+        SubProperty::create([
+            "unit_number" => "104",
+            "property_id" => $property2->id,
+            "landlord_id" => $landlord3->id,
+        ]);
+
         $property3 = Property::where('name', 'Property 3')->first();
 
         SubProperty::create([
