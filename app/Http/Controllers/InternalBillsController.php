@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveInternalBillsRequest;
+use App\Http\Requests\UploadImageRequest;
 use App\Models\InternalBill;
 use App\Services\InternalBillsService;
 use Illuminate\Http\JsonResponse;
@@ -48,5 +49,16 @@ class InternalBillsController extends Controller
         InternalBill::destroy($id);
         
         return response()->json(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function uploadImage(UploadImageRequest $request, $id)
+    {
+        $internalBill = InternalBill::findOrFail($id);
+        $imagePath = $request->file('image')->store('internal_bills_images', 'public');
+
+        $internalBill->image_payment_path = $imagePath;
+        $internalBill->save();
+
+        return response()->json(['message' => 'Image uploaded successfully', 'image_path' => $imagePath]);
     }
 }

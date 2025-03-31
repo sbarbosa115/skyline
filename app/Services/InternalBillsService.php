@@ -23,7 +23,6 @@ class InternalBillsService
     }
 
     $internalBill = InternalBill::where('general_bill_id', $data['general_bill_id'])
-      ->where('property_id', $data['property_id'])
       ->where('sub_property_id', $data['sub_property_id'])
       ->first();
     if ($internalBill) {

@@ -18,6 +18,7 @@ class GeneralBill extends Model
         'amount',
         'price',
         'payment_status',
+        'image_path',
     ];
 
     public function property()

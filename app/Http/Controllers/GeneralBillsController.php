@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveGeneralBillsRequest;
+use App\Http\Requests\UploadImageRequest;
 use App\Models\GeneralBill;
 use App\Services\GeneralBillsService;
 use Illuminate\Http\Response;
@@ -46,5 +47,16 @@ class GeneralBillsController extends Controller
         GeneralBill::destroy($id);
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function uploadImage(UploadImageRequest $request, $id)
+    {
+        $bill = GeneralBill::findOrFail($id);
+        $imagePath = $request->file('image')->store('general_bills_images', 'public');
+
+        $bill->image_path = $imagePath;
+        $bill->save();
+
+        return response()->json(['message' => 'Image uploaded successfully', 'image_path' => $imagePath]);
     }
 }

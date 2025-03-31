@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->decimal('price', 10, 2);
             $table->enum('payment_status', ['pending', 'paid']);
+            $table->string('image_path')->nullable();
             $table->timestamps();
             $table->foreign('sub_property_id')->references('id')->on('sub_properties')->onDelete('cascade');
         });

@@ -34,6 +34,10 @@ Route::prefix('v1')->group(function () {
         });
         
         Route::apiResource('general-bills', \App\Http\Controllers\GeneralBillsController::class);
+        Route::post('/general-bills/{id}/upload-image', [\App\Http\Controllers\GeneralBillsController::class, 'uploadImage']);
+
         Route::apiResource('internal-bills', \App\Http\Controllers\InternalBillsController::class);
+        Route::post('/internal-bills/{id}/upload-image', [\App\Http\Controllers\InternalBillsController::class, 'uploadImage']);
+
     });
 });

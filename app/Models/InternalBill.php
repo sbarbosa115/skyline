@@ -15,7 +15,7 @@ class InternalBill extends Model
         'amount',
         'price',
         'payment_status',
-        'proof_of_payment',
+        'image_payment_path',
     ];
 
     public function generalBill()

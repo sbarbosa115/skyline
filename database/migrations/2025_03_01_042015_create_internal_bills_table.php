@@ -15,7 +15,7 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->decimal('price', 10, 2);
             $table->enum('payment_status', ['pending', 'paid']);
-            $table->string('proof_of_payment')->nullable();
+            $table->string('image_payment_path')->nullable();
             $table->timestamps();
         });
     }

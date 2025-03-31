@@ -20,7 +20,6 @@ class SaveInternalBillsRequest extends FormRequest
             'amount' => 'required|numeric|min:0|max:99999999.99',
             'price' => 'nullable|numeric|min:0|max:99999999.99',
             'payment_status' => 'required|in:pending,paid',
-            'proof_of_payment' => 'nullable|string|max:255',
         ];
     }
 }
