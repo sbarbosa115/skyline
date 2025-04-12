@@ -2,9 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\GeneralBill;
-use App\Models\InternalBill;
-use App\Models\Property;
+use App\Models\Bill;
+use App\Models\SubProperty;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -12,33 +11,37 @@ class BillsService
 {
   public function create($data): JsonResponse
   {
-    $property = Property::find($data['property_id']);
-    if (!$property->has_sub_properties) {
-      return response()->json(['message' => 'Property does not have sub properties'], Response::HTTP_BAD_REQUEST);
+    $subProperty = SubProperty::find($data['sub_property_id']);
+    if ($subProperty instanceof JsonResponse) {
+      return $subProperty;
     }
 
-    $generalBill = GeneralBill::find($data['general_bill_id']);
-    if ($data['amount'] > $generalBill->amount || $data['price'] > $generalBill->price) {
-      return response()->json(['message' => 'Amount or price cannot be greater than GeneralBill'], Response::HTTP_BAD_REQUEST);
+    if ($this->billsExistInPeriod($subProperty->id, $data['service_type_id'], $data['period_from'])) {
+      return $this->errorResponse('Bills for this period already exist', Response::HTTP_BAD_REQUEST);
     }
 
-    $internalBill = InternalBill::where('general_bill_id', $data['general_bill_id'])
-      ->where('sub_property_id', $data['sub_property_id'])
-      ->first();
-    if ($internalBill) {
-      return response()->json(['message' => 'SubProperty already has an InternalBill for this GeneralBill'], Response::HTTP_BAD_REQUEST);
-    }
+    $bill = Bill::create($data);
 
     // If price is not provided, calculate it
     if ($data['price'] === null) {
-      $data['price'] = round($generalBill->calculateUnitPrice() * $data['amount'], 2);
+      $data['price'] = round($bill->calculateUnitPrice() * $data['amount'], 2);
     }
 
-    $internalBill = InternalBill::create($data);
-
-    return response()->json($internalBill, Response::HTTP_CREATED);
+    return response()->json($bill, Response::HTTP_CREATED);
   }
 
+  private function billsExistInPeriod(int $subPropertyId, int $serviceTypeId, string $periodFrom): bool
+  {
+    return Bill::where('sub_property_id', $subPropertyId)
+      ->where('service_type_id', $serviceTypeId)
+      ->where('period_to', '>', $periodFrom)
+      ->exists();
+  }
+
+  private function errorResponse(string $message, int $statusCode): JsonResponse
+  {
+    return response()->json(['message' => $message], $statusCode);
+  }
 
   private function notifyConsumption($data): void
   {

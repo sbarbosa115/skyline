@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sub_property_id')->constrained();
+            $table->foreignId('service_type_id')->constrained();
             $table->date('period_from');
             $table->date('period_to');
             $table->decimal('amount', 10, 2);

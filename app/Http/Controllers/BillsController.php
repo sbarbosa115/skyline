@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SaveInternalBillsRequest;
+use App\Http\Requests\SaveBillsRequest;
 use App\Http\Requests\UploadImageRequest;
-use App\Models\InternalBill;
+use App\Models\Bill;
 use App\Services\BillsService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -21,43 +21,43 @@ class BillsController extends Controller
 
     public function index()
     {
-        return response()->json(InternalBill::with('subProperty')->get());
+        return response()->json(Bill::with('subProperty')->get());
     }
 
-    public function store(SaveInternalBillsRequest $request): JsonResponse
+    public function store(SaveBillsRequest $request): JsonResponse
     {
         return $this->service->create($request->validated());
     }
 
     public function show($id)
     {
-        $internalBill = InternalBill::with('subProperty')->findOrFail($id);
+        $bill = Bill::with('subProperty')->findOrFail($id);
 
-        return response()->json($internalBill);
+        return response()->json($bill);
     }
 
-    public function update(SaveInternalBillsRequest $request, $id)
+    public function update(SaveBillsRequest $request, $id)
     {
-        $internalBill = InternalBill::findOrFail($id);
-        $internalBill->update($request->validated());
+        $bill = Bill::findOrFail($id);
+        $bill->update($request->validated());
 
-        return response()->json($internalBill);
+        return response()->json($bill);
     }
 
     public function destroy($id)
     {
-        InternalBill::destroy($id);
+        Bill::destroy($id);
         
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 
     public function uploadImage(UploadImageRequest $request, $id)
     {
-        $internalBill = InternalBill::findOrFail($id);
-        $imagePath = $request->file('image')->store('internal_bills_images', 'public');
+        $bill = Bill::findOrFail($id);
+        $imagePath = $request->file('image')->store('bills_images', 'public');
 
-        $internalBill->image_payment_path = $imagePath;
-        $internalBill->save();
+        $bill->image_payment_path = $imagePath;
+        $bill->save();
 
         return response()->json(['message' => 'Image uploaded successfully', 'image_path' => $imagePath]);
     }

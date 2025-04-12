@@ -11,6 +11,9 @@ class Bill extends Model
 
     protected $fillable = [
         'sub_property_id',
+        'service_type_id',
+        'period_from',
+        'period_to',
         'amount',
         'price',
         'payment_status',
@@ -20,5 +23,10 @@ class Bill extends Model
     public function subProperty()
     {
         return $this->belongsTo(SubProperty::class);
+    }
+
+    public function ServiceType()
+    {
+        return $this->belongsTo(ServiceType::class);
     }
 }
