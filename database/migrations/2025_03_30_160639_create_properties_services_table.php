@@ -13,7 +13,9 @@ return new class extends Migration
             $table->foreignId('property_id')->constrained();
             $table->foreignId('service_type_id')->constrained();
             $table->string('name');
-            $table->boolean('is_shared'); // only if property has sub properties
+            $table->boolean('is_shared');
+            $table->boolean('has_fixed_price')->default(false);
+            $table->decimal('fixed_price', 10, 2)->nullable();
             $table->timestamps();
         });
     }

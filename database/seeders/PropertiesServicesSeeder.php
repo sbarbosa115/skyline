@@ -101,6 +101,8 @@ class PropertiesServicesSeeder extends Seeder
           'service_type_id' => $internet->id,
           'name' => 'Internet',
           'is_shared' => true,
+          'has_fixed_price' => true,
+          'fixed_price' => 150000.00,
         ],
         "sub_properties" => [$subProperty2->id, $subProperty3->id, $subProperty4->id],
       ],

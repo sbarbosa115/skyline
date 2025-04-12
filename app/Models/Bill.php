@@ -5,23 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class InternalBill extends Model
+class Bill extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'general_bill_id',
         'sub_property_id',
         'amount',
         'price',
         'payment_status',
         'image_payment_path',
     ];
-
-    public function generalBill()
-    {
-        return $this->belongsTo(GeneralBill::class);
-    }
 
     public function subProperty()
     {

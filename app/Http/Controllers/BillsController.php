@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SaveInternalBillsRequest;
 use App\Http\Requests\UploadImageRequest;
 use App\Models\InternalBill;
-use App\Services\InternalBillsService;
+use App\Services\BillsService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
-class InternalBillsController extends Controller
+class BillsController extends Controller
 {
-    private InternalBillsService $service;
+    private BillsService $service;
 
-    public function __construct(InternalBillsService $service)
+    public function __construct(BillsService $service)
     {
         $this->middleware('auth:sanctum');
         $this->service = $service;

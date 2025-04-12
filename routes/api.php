@@ -32,12 +32,9 @@ Route::prefix('v1')->group(function () {
             Route::apiResource('contracts', \App\Http\Controllers\ContractsController::class);
             Route::apiResource('properties-services', \App\Http\Controllers\PropertiesServicesController::class);
         });
-        
-        Route::apiResource('general-bills', \App\Http\Controllers\GeneralBillsController::class);
-        Route::post('/general-bills/{id}/upload-image', [\App\Http\Controllers\GeneralBillsController::class, 'uploadImage']);
 
-        Route::apiResource('internal-bills', \App\Http\Controllers\InternalBillsController::class);
-        Route::post('/internal-bills/{id}/upload-image', [\App\Http\Controllers\InternalBillsController::class, 'uploadImage']);
+        Route::apiResource('bills', \App\Http\Controllers\BillsController::class);
+        Route::post('/bills/{id}/upload-image', [\App\Http\Controllers\BillsController::class, 'uploadImage']);
 
     });
 });

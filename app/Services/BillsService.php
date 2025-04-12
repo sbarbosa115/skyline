@@ -8,7 +8,7 @@ use App\Models\Property;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
-class InternalBillsService
+class BillsService
 {
   public function create($data): JsonResponse
   {
