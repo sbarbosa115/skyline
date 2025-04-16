@@ -15,11 +15,6 @@ class WorkOrder extends Model
         'status',
     ];
 
-    public function property()
-    {
-        return $this->belongsTo(Property::class);
-    }
-
     public function subProperty()
     {
         return $this->belongsTo(SubProperty::class);
