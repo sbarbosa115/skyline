@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveWorkOrdersRequest;
 use App\Models\WorkOrder;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Queue\Worker;
 
 class WorkOrdersController extends Controller
 {

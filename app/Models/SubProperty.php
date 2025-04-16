@@ -12,6 +12,7 @@ class SubProperty extends Model
     protected $fillable = [
         "unit_number",
         "property_id",
+        "landlord_id",
     ];
 
     public function property()
@@ -19,8 +20,8 @@ class SubProperty extends Model
         return $this->belongsTo(Property::class);
     }
 
-    public function contracts()
+    public function landlord()
     {
-        return $this->hasMany(Contract::class);
+        return $this->belongsTo(User::class, 'landlord_id');
     }
 }

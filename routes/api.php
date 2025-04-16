@@ -34,7 +34,8 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::apiResource('bills', \App\Http\Controllers\BillsController::class);
-        Route::apiResource('work-orders', \App\Http\Controllers\WorkOrdersController::class);
-        Route::post('/bills/{id}/upload-image', [\App\Http\Controllers\BillsController::class, 'uploadImage']);
     });
+
+    Route::apiResource('work-orders', \App\Http\Controllers\WorkOrdersController::class);
+    Route::post('/bills/{id}/upload-image', [\App\Http\Controllers\BillsController::class, 'uploadImage']);
 });

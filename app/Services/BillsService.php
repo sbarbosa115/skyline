@@ -2,10 +2,13 @@
 
 namespace App\Services;
 
+use App\Mail\SendBillEmail;
 use App\Models\Bill;
 use App\Models\SubProperty;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Mail;
 
 class BillsService
 {
@@ -22,10 +25,11 @@ class BillsService
 
     $bill = Bill::create($data);
 
-    // If price is not provided, calculate it
     if ($data['price'] === null) {
       $data['price'] = round($bill->calculateUnitPrice() * $data['amount'], 2);
     }
+
+    $this->notifyBill($subProperty->landlord);
 
     return response()->json($bill, Response::HTTP_CREATED);
   }
@@ -43,8 +47,8 @@ class BillsService
     return response()->json(['message' => $message], $statusCode);
   }
 
-  private function notifyConsumption($data): void
+  private function notifyBill(User $user): void
   {
-    
+    Mail::to($user->email)->send(new SendBillEmail());
   }
 }
