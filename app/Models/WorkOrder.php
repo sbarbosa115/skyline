@@ -19,4 +19,9 @@ class WorkOrder extends Model
     {
         return $this->belongsTo(SubProperty::class);
     }
+
+    public function notes()
+    {
+        return $this->hasMany(WorkOrderNote::class);
+    }
 }
