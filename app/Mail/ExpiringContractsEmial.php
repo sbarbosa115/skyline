@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ExpiringContractsEmial extends Mailable
+class ExpiringContractsEmail extends Mailable
 {
     use Queueable, SerializesModels;
 

@@ -28,7 +28,9 @@ class NotifyExpiredBills extends Command
      */
     public function handle()
     {
-        $expiredBills = Bill::where('period_to', '<', now())->get();
+        $expiredBills = Bill::where('status', Bill::STATUS_SENT)
+            ->where('period_to', '<', now())
+            ->get();
 
         foreach ($expiredBills as $bill) {
             $activeContract = $bill->subProperty->activeContract;

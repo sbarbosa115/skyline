@@ -9,11 +9,16 @@ class Bill extends Model
 {
     use HasFactory;
 
+    public const STATUS_GENERATED = 'generated';
+    public const STATUS_SENT = 'sent';
+    public const STATUS_PAID = 'paid';
+
     protected $fillable = [
         'sub_property_id',
         'service_type_id',
         'period_from',
         'period_to',
+        'payment_date',
         'amount',
         'price',
         'payment_status',

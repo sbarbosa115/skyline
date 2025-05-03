@@ -57,6 +57,7 @@ class BillsController extends Controller
         $imagePath = $request->file('image')->store('bills_images', 'public');
 
         $bill->image_payment_path = $imagePath;
+        $bill->status = Bill::STATUS_SENT;
         $bill->save();
 
         return response()->json(['message' => 'Image uploaded successfully', 'image_path' => $imagePath]);

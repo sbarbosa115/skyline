@@ -19,6 +19,10 @@ class BillsService
       return $subProperty;
     }
 
+    if ($subProperty->activeContract === null) {
+      return $this->errorResponse('Sub property has no active contract', Response::HTTP_BAD_REQUEST);
+    }
+
     if ($this->billsExistInPeriod($subProperty->id, $data['service_type_id'], $data['period_from'])) {
       return $this->errorResponse('Bills for this period already exist', Response::HTTP_BAD_REQUEST);
     }

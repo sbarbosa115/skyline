@@ -14,6 +14,7 @@ return new class extends Migration
             $table->foreignId('service_type_id')->constrained();
             $table->date('period_from');
             $table->date('period_to');
+            $table->date('payment_date');
             $table->decimal('amount', 10, 2);
             $table->decimal('price', 10, 2);
             $table->enum('payment_status', ['generated', 'sent', 'paid'])->default('generated');
