@@ -24,4 +24,14 @@ class SubProperty extends Model
     {
         return $this->belongsTo(User::class, 'landlord_id');
     }
+
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class);
+    }
+
+    public function activeContract()
+    {
+        return $this->hasOne(Contract::class)->where('status', Contract::STATUS_ACTIVE);
+    }
 }

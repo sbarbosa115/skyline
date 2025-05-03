@@ -19,6 +19,14 @@ class SubPropertySeeder extends Seeder
         $landlord2 = User::where('email', 'lessor2@example.com')->first();
         $landlord3 = User::where('email', 'lessor3@example.com')->first();
 
+        $property1 = Property::where('name', 'Property 1')->first();
+
+        SubProperty::create([
+            "unit_number" => "101",
+            "property_id" => $property1->id,
+            "landlord_id" => $landlord1->id,
+        ]);
+
         $property2 = Property::where('name', 'Property 2')->first();
 
         SubProperty::create([
