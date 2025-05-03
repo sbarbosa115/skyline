@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Mail\SendBillEmail;
+use App\Mail\CreatedBillEmail;
 use App\Models\Bill;
 use App\Models\SubProperty;
 use App\Models\User;
@@ -53,6 +53,6 @@ class BillsService
 
   private function notifyBill(User $user): void
   {
-    Mail::to($user->email)->send(new SendBillEmail());
+    Mail::to($user->email)->send(new CreatedBillEmail());
   }
 }

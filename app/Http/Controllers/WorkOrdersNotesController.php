@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveWorkOrdersNotesRequest;
+use App\Mail\WorkOrdersUpdatesEmail;
 use App\Models\WorkOrderNote;
 use Illuminate\Http\Response;
+use Mail;
 
 class WorkOrdersNotesController extends Controller
 {
@@ -16,24 +18,34 @@ class WorkOrdersNotesController extends Controller
     }
 
     public function store(SaveWorkOrdersNotesRequest $request) {
-        $workOrder = WorkOrderNote::create($request->validated());
+        $workOrderNote = WorkOrderNote::create($request->validated());
+        $subProperty = $workOrderNote->workOrder->subProperty;
 
-        return response()->json($workOrder, Response::HTTP_CREATED);
+        if ($subProperty->activeContract) {
+            Mail::to($subProperty->activeContract->lessee->email)->send(new WorkOrdersUpdatesEmail());
+        }
+
+        return response()->json($workOrderNote, Response::HTTP_CREATED);
     }
 
     public function show(string $id)
     {
-        $workOrder = WorkOrderNote::with('workOrder')->findOrFail($id);
+        $workOrderNote = WorkOrderNote::with('workOrder')->findOrFail($id);
 
-        return response()->json($workOrder);
+        return response()->json($workOrderNote);
     }
 
     public function update(SaveWorkOrdersNotesRequest $request, string $id)
     {
-        $workOrder = WorkOrderNote::findOrFail($id);
-        $workOrder->update($request->validated());
+        $workOrderNote = WorkOrderNote::findOrFail($id);
+        $workOrderNote->update($request->validated());
+        $subProperty = $workOrderNote->workOrder->subProperty;
 
-        return response()->json($workOrder);
+        if ($subProperty->activeContract) {
+            Mail::to($subProperty->activeContract->lessee->email)->send(new WorkOrdersUpdatesEmail());
+        }
+
+        return response()->json($workOrderNote);
     }
 
     public function destroy(string $id)
