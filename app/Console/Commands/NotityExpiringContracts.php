@@ -28,9 +28,11 @@ class NotifyExpiringContracts extends Command
      */
     public function handle()
     {
-        Contract::where('end_date', '>', now()->addMonths(3))->each(function ($contract) {
-            Mail::to($contract->lessor->email)->send(new ExpiringContractsEmail());
-            Mail::to($contract->lessee->email)->send(new ExpiringContractsEmail());
-        });
+        Contract::whereNull('renew_contract')
+            ->where('end_date', '>', now()->addMonths(3))
+            ->each(function ($contract) {
+                Mail::to($contract->lessor->email)->send(new ExpiringContractsEmail());
+                Mail::to($contract->lessee->email)->send(new ExpiringContractsEmail());
+            });
     }
 }

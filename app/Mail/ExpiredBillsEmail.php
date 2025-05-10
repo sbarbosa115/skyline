@@ -27,7 +27,7 @@ class ExpiredBillsEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Expired Bills',
+            subject: 'Expired Bill',
         );
     }
 
@@ -37,7 +37,7 @@ class ExpiredBillsEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.expired-bill',
         );
     }
 

@@ -27,7 +27,7 @@ class CreatedBillEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Send Bill Email',
+            subject: 'Created Bill',
         );
     }
 
@@ -37,7 +37,7 @@ class CreatedBillEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.send-bill',
+            view: 'emails.created-bill',
         );
     }
 

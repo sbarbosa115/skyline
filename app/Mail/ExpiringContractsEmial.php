@@ -27,7 +27,7 @@ class ExpiringContractsEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Expiring Contracts Emial',
+            subject: 'Expiring Contract',
         );
     }
 
@@ -37,7 +37,7 @@ class ExpiringContractsEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.expired-contract',
         );
     }
 
